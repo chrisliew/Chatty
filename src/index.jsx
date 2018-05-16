@@ -1,4 +1,5 @@
-// Application entrypoint.
+// Application entrypoint
+// jshint ignore: start
 
 // Load up the application styles
 require("../styles/application.scss");
