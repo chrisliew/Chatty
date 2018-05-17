@@ -8,6 +8,7 @@ class ChatBar extends Component {
   // console.log(props.currentUser);
   // console.log(props)
   this.onContent = this.onContent.bind(this);
+  this.onCurrentUser = this.onCurrentUser.bind(this);
   }
 
   //when someone writes in chatbar message and hits enter, pass data back to the
@@ -22,12 +23,20 @@ class ChatBar extends Component {
     }
   }
 
+  onCurrentUser(event) {
+    if(event.key === 'Enter') {
+      this.props.handleChange(event.target.value);
+      console.log("This is the event:" , event);
+    }
+  }
+
+
 
 
   render() {
     return (
       <footer className="chatbar">
-        <input className="chatbar-username"  defaultValue={this.props.currentUser.name}/>
+        <input className="chatbar-username"  onKeyPress={this.onCurrentUser} defaultValue={this.props.currentUser.name}/>
         <input className="chatbar-message" onKeyPress={this.onContent} placeholder="Type a message and hit ENTER"   />
       </footer>
     )

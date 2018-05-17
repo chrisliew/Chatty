@@ -45,7 +45,9 @@
     "webpack-dev-server": "2.3.0"
   },
   "dependencies": {
+    "nodemon": "^1.17.4",
     "react": "15.4.2",
-    "react-dom": "15.4.2"
+    "react-dom": "15.4.2",
+    "uuid": "^3.2.1"
   }
 }
