@@ -1,6 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css");
 
+h1 {
+  color: yellow;
+}
+
 
 body {
   background: white;
@@ -86,4 +90,12 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.client-count {
+  font-size: 60%;
+  position: absolute;
+  top: 50%;
+  left: 85%;
+  transform: translate(-50%, -50%)
 }

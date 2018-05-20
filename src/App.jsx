@@ -1,85 +1,89 @@
 import React, {Component} from 'react';
 import ChatBar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
-
+import Message from './Message.jsx';
 require ('../styles/application.scss');
-// Wrap it in div element so there can be multiple ones.
+
 class App extends Component {
+    constructor() {
+      super();
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      // currentUser: {name: "Chris"}, // optional. if currentUser is not defined, it means the user is Anonymous
-      currentUser: {name: 'Bob'},
-      messages: []
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.onNewPost = this.onNewPost.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({currentUser: {name:event}});
-  }
-
-  handleEnter(event) {
-    event.preventDefault();
-  }
-
-
-    // in App.jsx
-  componentDidMount() {
-
-    this.socket = new WebSocket('ws://localhost:3001');
-
-    // take message and send off to all the clients, instead of just the original one
-    this.socket.addEventListener('message', (messageEvent) => {
-      const messageObject = JSON.parse(messageEvent.data);
-      console.log("received message on client side:", messageObject);
-      this.setState({
-        messages: [...this.state.messages, messageObject],
-      });
-
-    });
-
-
-
-    // console.log("componentDidMount <App />");
-    // setTimeout(() => {
-    //   console.log("Simulating incoming message");
-    //   // Add a new message to the list of messages in the data store
-    //   const newMessage = {id: 3, username: "Bob", content: "Hello there!"};
-
-    //   const messages = this.state.messages.concat(newMessage);
-    //   // Update the state of the app component.
-    //   // Calling setState will trigger a call to render() in App and all child components.
-    //   this.setState({messages: messages});
-    // }, 500);
-  }
-
-
-    //create a function that passes through props to chatbar
-    // when client types in content, want to send it over to server.
-    onNewPost(content) {
-      const newMessage = { username: this.state.currentUser.name, content: content};
-      const messages = this.state.messages.concat(newMessage);
-
-      // this.setState({messages: messages}); (THIS IS commented out as it created duplicates)
-      this.socket.send(JSON.stringify(newMessage));
+      this.state = {
+          currentUser: {name: "Bob"}, // optional. if currentUser is not defined, it means the user is Anonymous
+          messages: [],
+          clientCount: 0,
+      };
+      this.onNewPost = this.onNewPost.bind(this);
+      this.onNewUser = this.onNewUser.bind(this);
     }
 
+    componentDidMount() {
+
+      this.socket = new WebSocket('ws://localhost:3001');
+
+
+      this.socket.addEventListener('message', (messageEvent) => {
+        const messageObject = JSON.parse(messageEvent.data);
+        console.log("received message on client side:", messageObject);
+        console.log("clientcount:", messageObject.clientCount);
+
+        if (messageObject.type === 'usersCount') {
+          this.setState({
+            clientCount: messageObject.content
+          });
+          } else {
+            this.setState({
+              messages: [...this.state.messages, messageObject],
+            });
+          }
+      });
+    }
+
+    onNewPost(content) {
+      const newMessage = {
+        type: "postMessage",
+        username: this.state.currentUser.name,
+        content: content
+      };
+      const message = this.state.messages.concat(newMessage);
+      console.log("NewPost msg from client" , JSON.stringify(newMessage));
+      this.socket.send(JSON.stringify(newMessage));
+
+    }
+
+    onNewUser(event) {
+      let previousUser = this.state.currentUser.name;
+      let currentUserChange = {name: event};
+      //this.setState is asynchronous. Can't console.log to get state, so use the react in chrome dev tools
+      this.setState({
+        currentUser: currentUserChange
+      });
+
+      let notificationMessage = `${previousUser} has changed their name to ${event}`;
+
+      let newMessage = {
+        type: "postNotification",
+        content: notificationMessage
+      };
+      let messages = this.state.messages.concat(newMessage);
+      this.socket.send(JSON.stringify(newMessage));
+      console.log("Client Sends:" , newMessage);
+    }
 
   render() {
     return (
       <div>
         <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
+          <a href="/" className="navbar-brand">Chatty
+            <span className = "client-count">
+            {this.state.clientCount} users online
+            </span>
+          </a>
         </nav>
-        <ChatBar onNewPost={ this.onNewPost } currentUser={this.state.currentUser} handleChange={this.handleChange}/>
-        <MessageList message={this.state.messages}/>
+          <MessageList messages={this.state.messages}/>
+          <ChatBar currentUser={this.state.currentUser.name} onNewPost={this.onNewPost} onNewUser={this.onNewUser} />
       </div>
     );
   }
 }
-
-
 export default App;
