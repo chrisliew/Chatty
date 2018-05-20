@@ -3,7 +3,10 @@ Chatty App
 
 Chatty App will allow users to communicate with each other without having to register accounts. It will use React, a popular front-end library created and used heavily by Facebook as well as modern tools for Node including Webpack and Babel, and Web Sockets on the server side.
 
-Screenshot
+## Screenshot
+
+!["Screenshot of chatty homepage"](https://github.com/chrisliew/Chatty-App/blob/master/docs/Homepage.png)
+!["Screenshot of chatty homepage"](https://github.com/chrisliew/Chatty-App/blob/master/docs/UsersChatting.png)
 
 
 
