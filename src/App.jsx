@@ -24,8 +24,6 @@ class App extends Component {
 
       this.socket.addEventListener('message', (messageEvent) => {
         const messageObject = JSON.parse(messageEvent.data);
-        console.log("received message on client side:", messageObject);
-        console.log("clientcount:", messageObject.clientCount);
 
         if (messageObject.type === 'usersCount') {
           this.setState({

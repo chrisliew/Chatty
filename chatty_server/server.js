@@ -23,6 +23,7 @@ const wss = new SocketServer.Server({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  getUsersCount();
 
   ws.on('message', function incoming(newMessage) {
 
@@ -45,7 +46,6 @@ wss.on('connection', (ws) => {
   });
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   ws.on('close', () => console.log('Client disconnected'));
-  getUsersCount();
 
 });
 
