@@ -5,8 +5,9 @@ Chatty App will allow users to communicate with each other without having to reg
 
 ## Screenshot
 
-!["Screenshot of chatty Users chatting"](https://github.com/chrisliew/Chatty-App/blob/master/docs/UsersChatting.png)
-!["Screenshot of chatty with Picture"](https://github.com/chrisliew/Chatty-App/blob/master/docs/ChattyPicWithDog.png)
+
+<img src="https://github.com/chrisliew/Chatty-App/blob/master/docs/UsersChatting.png" height="400px" width="800px">
+<img align="center" src="https://github.com/chrisliew/Chatty-App/blob/master/docs/ChattyPicWithDog.png" height="400px" width="800px">
 
 
 ### Usage
